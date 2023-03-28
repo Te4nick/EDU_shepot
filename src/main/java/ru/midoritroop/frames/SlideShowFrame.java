@@ -9,32 +9,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class SlideShowFrame extends JPanel {
-    private final CardLayout crd = new CardLayout();
-    private Container slideShow;
-    private JPanel firstSlide, secondSlide, thirdSlide, fourthSlide, fifthSlide;
+    protected CardLayout crd;
+    protected Container slideShow;
 
     SlideShowFrame(ActionListener onReturn) {
+        this.crd = new CardLayout();
         createComposition(onReturn);
-
-        slideShow.add("1", firstSlide);
-        slideShow.add("2", secondSlide);
-        slideShow.add("3", thirdSlide);
-        slideShow.add("4", fourthSlide);
-        slideShow.add("5", fifthSlide);
-        crd.show(slideShow, "1");
     }
 
-    private JLabel createPanel(int x, int y, int width, int height) {
-        JLabel pnl = new JLabel();
-        pnl.setBounds(x, y, width, height);
-        pnl.setFont(new Font("Calibri", Font.BOLD, 18));
-        pnl.setBackground(RMan.color.background);
-        pnl.setForeground(RMan.color.textLilac);
-        pnl.setHorizontalAlignment(JLabel.LEFT);
-        pnl.setOpaque(true);
-        pnl.setBorder(BorderFactory.createLineBorder(RMan.color.lightPurple, 5));
-        pnl.setVisible(false);
-        return pnl;
+
+    protected JLabel createDesc(String text, int fontSize, boolean border, int x, int y, int width, int height) {
+        JLabel desc = new JLabel();
+        desc.setBounds(x, y, width, height);
+        desc.setFont(new Font("Calibri", Font.BOLD, fontSize));
+        desc.setHorizontalTextPosition(JLabel.CENTER);
+        desc.setForeground(RMan.color.textLilac);
+        desc.setHorizontalAlignment(border ? JLabel.LEFT : JLabel.CENTER);
+        desc.setText(text);
+        if (border) {
+            desc.setOpaque(true);
+            desc.setBorder(BorderFactory.createLineBorder(RMan.color.lightPurple, 5));
+            desc.setVisible(false);
+        }
+        return desc;
     }
 
     private JPanel createCompSlide() {
@@ -45,7 +42,7 @@ public class SlideShowFrame extends JPanel {
         return slide;
     }
 
-    private JPanel createSlide(String path, String name, boolean SideLayout) {
+    protected JPanel createSlide(String path, String name, boolean SideLayout) {
         JPanel slide = new JPanel();
         slide.setLayout(null);
         slide.setBackground(RMan.color.background);
@@ -133,32 +130,21 @@ public class SlideShowFrame extends JPanel {
         bottomNavBar.setBackground(RMan.color.btmTopBars);
         this.add(bottomNavBar);
         // Return Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowReturnPRPL.png"),
+        bottomNavBar.add("arrowReturn", createButton(RMan.getPath("ArrowReturnPRPL.png"),
                 50, 15, 100, 45, listener));
         // Next Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowNextPRPL.png"),
+        bottomNavBar.add("arrowNext", createButton(RMan.getPath("ArrowNextPRPL.png"),
                 680, 5, 65, 65, e -> crd.next(slideShow)));
         // Back Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowBackPRPL.png"),
+        bottomNavBar.add("arrowBack", createButton(RMan.getPath("ArrowBackPRPL.png"),
                 550, 5, 65, 65, e -> crd.previous(slideShow)));
 
     }
 
-    private JLabel createDesc(String text, int x, int y, int width, int height) {
-        JLabel instructions = new JLabel();
-        instructions.setBounds(x, y, width, height);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText(text);
-        return instructions;
-    }
-
-    private void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
+    protected void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
                            String text, int textX, int textY, int textWidth, int textHeight, String slide) {
-        JLabel label = createPanel(textX, textY, textWidth, textHeight);
-        label.setText(text);
+
+        JLabel label = createDesc(text, 18, true, textX, textY, textWidth, textHeight);
         JLabel hitbox = new JLabel();
         hitbox.setBounds(boxX, boxY, boxWidth, boxHeight);
         hitbox.addMouseListener(new MouseListener() {

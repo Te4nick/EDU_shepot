@@ -7,13 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class StructFrame extends JPanel {
-    private final CardLayout crd;
-    private Container slideShow;
+public class StructFrame extends SlideShowFrame {
     private JPanel firstSlide, secondSlide, thirdSlide, fourthSlide, fifthSlide;
     StructFrame(ActionListener onReturn){
-        crd = new CardLayout();
-        createComposition(onReturn);
+        super(onReturn);
         createFirstSlide();
         createSecondSlide();
         createThirdSlide();
@@ -71,159 +68,11 @@ public class StructFrame extends JPanel {
         pnl.setVisible(false);
         return pnl;
     }
-    private JPanel createCompSlide() {
-        JPanel slide = new JPanel();
-        slide.setLayout(null);
-        slide.setBackground(Color.BLACK);
-        slide.setBounds(0, 0, 1280, 605);
-        return slide;
-    }
-    private JPanel createSlide(String path, String name, boolean SideLayout) {
-        JPanel slide = new JPanel();
-        slide.setLayout(null);
-        slide.setBackground(RMan.color.background);
-        slide.setBounds(0, 0, 1280, 605);
-
-        JPanel topBar = new JPanel();
-        topBar.setBounds(0, 0, 1280, 75);
-        topBar.setBackground(RMan.color.btmTopBars);
-
-        JLabel img = new JLabel();
-        ImageIcon unit = new ImageIcon(path);
-        Image image = unit.getImage();
-        Image newimg;
-        if (!SideLayout) {
-            img.setBounds(50, 150, 750, 400);
-            newimg = image.getScaledInstance(750, 400, java.awt.Image.SCALE_SMOOTH);
-        } else {
-            img.setBounds(50, 85, 750, 500);
-            newimg = image.getScaledInstance(750, 500, java.awt.Image.SCALE_SMOOTH);
-        }
-        unit = new ImageIcon(newimg);
-        img.setVerticalAlignment(JLabel.TOP);
-        img.setIcon(unit);
-        slide.setLayout(null);
-        slide.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
-                System.out.println(x + "," + y);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-        slide.add(img);
-
-        JLabel txt = new JLabel();
-        txt.setText(name);
-        txt.setFont(new Font("Calibri", Font.BOLD, 70));
-        txt.setHorizontalTextPosition(JLabel.CENTER);
-        txt.setForeground(RMan.color.textLilac);
-        topBar.add(txt);
-        slide.add(topBar);
-        slide.repaint();
-        return slide;
-    }
-
-    private JButton createButton(String path, int x, int y, int width, int height, ActionListener e) {
-        JButton button = new JButton(new ImageIcon(path));
-        button.setBounds(x, y, width, height);
-        button.addActionListener(e);
-        button.setFocusable(false);
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        return button;
-    }
-    private void createComposition(ActionListener listener) {
-        this.setLayout(null);
-        slideShow = createCompSlide();
-        slideShow.setLayout(crd);
-        this.add(slideShow);
-        JPanel bottomNavBar = new JPanel();
-        bottomNavBar.setLayout(null);
-        bottomNavBar.setBounds(0, 605, 1280, 75);
-        bottomNavBar.setBackground(RMan.color.btmTopBars);
-        this.add(bottomNavBar);
-        // Return Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowReturnPRPL.png"),
-                50, 15, 100, 45, listener));
-        // Next Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowNextPRPL.png"),
-                680, 5, 65, 65, e -> crd.next(slideShow)));
-        // Back Button
-        bottomNavBar.add(createButton(RMan.getPath("ArrowBackPRPL.png"),
-                550, 5, 65, 65, e -> crd.previous(slideShow)));
-
-    }
-
-    private JLabel createInstructions(String text, int x, int y, int width, int height) {
-        JLabel instructions = new JLabel();
-        instructions.setBounds(x, y, width, height);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText(text);
-        return instructions;
-    }
-
-    private void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
-                           String text, int textX, int textY, int textWidth, int textHeight, String slide) {
-        JLabel label = createPanel(textX,textY,textWidth,textHeight);
-        label.setText(text);
-        JLabel hitbox = new JLabel();
-        hitbox.setBounds(boxX, boxY, boxWidth, boxHeight);
-        hitbox.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                crd.show(slideShow, slide);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                label.setVisible(true);
-                label.updateUI();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                label.setVisible(false);
-            }
-        });
-        parent.add(label);
-        parent.add(hitbox);
-    }
 
     private void createFirstSlide() {
         firstSlide = createSlide(RMan.getPath("MainStruct.png"), "Структура", true);
 
-        firstSlide.add(createInstructions(RMan.getString("structFrame", "slide1Desc"),
+        firstSlide.add(createDesc(RMan.getString("structFrame", "slide1Desc"), 28, false,
                 830, 80, 430, 500));
 
         addHitbox(firstSlide, 107,154,244-107,253-154,
@@ -244,88 +93,52 @@ public class StructFrame extends JPanel {
         addHitbox(firstSlide, 287,121,362-287,346-121,
                                 RMan.getString("structFrame", "slide1H5"), 391,269, 150,130, "1");
     }
-    private void createSecondSlide() { // TODO: Refactor hitboxes
+    private void createSecondSlide() { // TODO: Replace plain strings
         secondSlide = createSlide("", "Измерительный микрофон", false);
 
-        secondSlide.add(createInstructions(RMan.getString("structFrame", "slide2Desc"),
+        secondSlide.add(createDesc(RMan.getString("structFrame", "slide2Desc"), 28, false,
                 830, 180, 430, 250));
 
-        JLabel msg1 = createPanel(391,187,150,60);
-        msg1.setText("<html>Кабель</html>");
-        JLabel htb1 = hitbox(336,248,454-336,325-248, msg1);
-        secondSlide.add(msg1);
-        secondSlide.add(htb1);
+        addHitbox(secondSlide, 336,248,454-336,325-248,
+                "<html>Кабель</html>", 391,187,150,60, "2");
 
-        JLabel msg2  = createPanel(445,178,100,60);
-        msg2.setText("<html>Питание</html>");
-        JLabel htb2 = hitbox(484,248,579-484,275-248, msg2);
-        secondSlide.add(msg2);
-        secondSlide.add(htb2);
+        addHitbox(secondSlide, 484,248,579-484,275-248,
+                "<html>Питание</html>", 445,178,100,60, "2");
 
-        JLabel msg3  = createPanel(409,342,150,60);
-        msg3.setText("<html>Заземление</html>");
-        JLabel htb3 = hitbox(477,275,578-477,299-275, msg3);
-        secondSlide.add(msg3);
-        secondSlide.add(htb3);
+        addHitbox(secondSlide, 477,275,578-477,299-275,
+                "<html>Заземление</html>", 409,342,150,60, "2");
 
-        JLabel msg4  = createPanel(513,346,150,60);
-        msg4.setText("<html>Защитная оболочка кабеля</html>");
-        JLabel htb4 = hitbox(454,297,577-454,316-297, msg4);
-        secondSlide.add(msg4);
-        secondSlide.add(htb4);
+        addHitbox(secondSlide, 454,297,577-454,316-297,
+                "<html>Защитная оболочка кабеля</html>", 513,346,150,60, "2");
 
-        JLabel msg5  = createPanel(63,180,150,60);
-        msg5.setText("<html>Источник питания</html>");
-        JLabel htb5 = hitbox(46,275,93-46,322-278, msg5);
-        secondSlide.add(msg5);
-        secondSlide.add(htb5);
+        addHitbox(secondSlide, 46,275,93-46,322-278,
+                 "<html>Источник питания</html>", 63,180,150,60, "2");
 
-        JLabel msg6  = createPanel(239,432,150,60);
-        msg6.setText("<html>Одиночный аудио-канал</html>");
-        JLabel htb6 = hitbox(190,244,315-190,353-244, msg6);
-        secondSlide.add(msg6);
-        secondSlide.add(htb6);
+        addHitbox(secondSlide, 190,244,315-190,353-244,
+                "<html>Одиночный аудио-канал</html>", 239,432,150,60, "2");
 
-        JLabel msg7  = createPanel(629,166,150,60);
-        msg7.setText("<html>Микрофонная система</html>");
-        JLabel htb7 = hitbox(581,248,703-581,317-248, msg7);
-        secondSlide.add(msg7);
-        secondSlide.add(htb7);
+        addHitbox(secondSlide, 581,248,703-581,317-248,
+                 "<html>Микрофонная система</html>", 629,166,150,60, "2");
 
-        JLabel msg11 = createPanel(260,80,300,200);
-        msg11.setText("<html>Параметры барьера:<br>" +
-                "Voc/Uo ≤ VMAX / UI<br>" +
-                " Isc/Io ≤ IMAX/ II <br>" +
-                "Ca/Co > CI + CCABLE<br>" +
-                " La/Lo > LI + LCABL<br>" +
-                "Ui = 30V, Ii = 100mA, Pi = 0.75W, Ci = 0, Li = 0.36uH – барьер серии EX378XYYY\n</html>");
-        JLabel htb11 = hitbox(516,200,560-516,246-200, msg11);
-        secondSlide.add(msg11);
-        secondSlide.add(htb11);
+        addHitbox(secondSlide, 516,200,560-516,246-200,
+                "<html>Параметры барьера:<br>" +
+                        "Voc/Uo ≤ VMAX / UI<br>" +
+                        " Isc/Io ≤ IMAX/ II <br>" +
+                        "Ca/Co > CI + CCABLE<br>" +
+                        " La/Lo > LI + LCABL<br>" +
+                        "Ui = 30V, Ii = 100mA, Pi = 0.75W, Ci = 0, Li = 0.36uH – барьер серии EX378XYYY</html>", 260,80,300,200, "2");
 
-        JLabel msg12  = createPanel(30,108,200,160);
-        msg12.setText("<html>Барьер устанавливается в корпусе, соответствующим стандартам властей данной страны</html>");
-        JLabel htb12 = hitbox(221,205,263-221,242-205, msg12);
-        secondSlide.add(msg12);
-        secondSlide.add(htb12);
+        addHitbox(secondSlide, 221,205,263-221,242-205,
+                "<html>Барьер устанавливается в корпусе, соответствующим стандартам властей данной страны</html>", 30,108,200,160, "2");
 
-        JLabel msg13  = createPanel(445,399,200,100);
-        msg13.setText("<html>Защитные экраны заземляются на концах барьера</html>");
-        JLabel htb13 = hitbox(516,318,557-516,357-318, msg13);
-        secondSlide.add(msg13);
-        secondSlide.add(htb13);
+        addHitbox(secondSlide, 516,318,557-516,357-318,
+                "<html>Защитные экраны заземляются на концах барьера</html>", 445,399,200,100, "2");
 
-        JLabel msg14  = createPanel(699,467,180,120);
-        msg14.setText("<html>Утвержденный картридж для микрофона – картридж серии EX377XYYY</html>");
-        JLabel htb14 = hitbox(661,355,701-661,392-355, msg14);
-        secondSlide.add(msg14);
-        secondSlide.add(htb14);
+        addHitbox(secondSlide, 661,355,701-661,392-355,
+                "<html>Утвержденный картридж для микрофона – картридж серии EX377XYYY</html>", 699,467,180,120, "2");
 
-        JLabel msg15  = createPanel(555,463,200,120);
-        msg15.setText("<html>Утвержденный усилитель для микрофона – усилитель серии EX426XYYY</html>");
-        JLabel htb15 = hitbox(580,357,616-580,393-357, msg15);
-        secondSlide.add(msg15);
-        secondSlide.add(htb15);
+        addHitbox(secondSlide, 580,357,616-580,393-357,
+                "<html>Утвержденный усилитель для микрофона – усилитель серии EX426XYYY</html>", 555,463,200,120, "2");
 
         JLabel img = new JLabel();
         ImageIcon unit = new ImageIcon(RMan.getPath("MicroStruct.png"));
@@ -341,13 +154,13 @@ public class StructFrame extends JPanel {
     private void createThirdSlide() {
         thirdSlide = createSlide("", "Акустический излучатель", false);
 
-        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc"),
+        thirdSlide.add(createDesc(RMan.getString("structFrame", "slide3Desc"), 28, false,
                 830, 80, 430, 450));
 
-        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc1"),
+        thirdSlide.add(createDesc(RMan.getString("structFrame", "slide3Desc1"), 28, false,
                 100,240, 630, 100));
 
-        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc2"),
+        thirdSlide.add(createDesc(RMan.getString("structFrame", "slide3Desc2"), 28, false,
                 226,428, 430, 100));
 
         JLabel msg1 = createPanel(125,82,250,60);
@@ -475,7 +288,7 @@ public class StructFrame extends JPanel {
     private void createFourthSlide() {
         fourthSlide = createSlide("", "Генератор шума", false);
 
-        fourthSlide.add(createInstructions(RMan.getString("structFrame", "slide4Desc"),
+        fourthSlide.add(createDesc(RMan.getString("structFrame", "slide4Desc"), 28, false,
                 830, 180, 430, 250));
 
         JLabel msg1 = createPanel(37,138,250,60);
@@ -528,7 +341,7 @@ public class StructFrame extends JPanel {
     private void createFifthSlide() {
         fifthSlide = createSlide(RMan.getPath("MeasuringToolStruct.png"), "Средство измерения помех", true);
 
-        fifthSlide.add(createInstructions(RMan.getString("structFrame", "slide5Desc"),
+        fifthSlide.add(createDesc(RMan.getString("structFrame", "slide5Desc"), 28, false,
                 830, 80, 430, 450));
 
         JLabel msg1 = createPanel(37,138,150,60);

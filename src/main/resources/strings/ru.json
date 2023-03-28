@@ -25,6 +25,14 @@
     "slide1H4": "<html>Средство измерения помех</html>",
     "slide1H5": "<html>Ограждающая конструкция, для которой проводятся измерения</html>"
   },
+  "helpFrame": {
+    "desc1": "<html>Для создания этой программы использовались данные из открытых источников, научной литературы, официальных сайтов производителей оборудования.</html>",
+    "desc2": "<html>Литература по автоматизированному комплексу для проведения акустических и виброакустических измерений «ШЕПОТ»:</html>",
+    "btn1": "<html>Формуляр (PDF rus)</html>",
+    "btn2": "<html>Учебно-методическое пособие (PDF rus)</html>",
+    "btn3": "<html>Руководство по эксплуатации измерителя шумовых помех «Larson&Davis 824» (PDF eng)</html>"
+
+  },
   "paths": {
     "Logo.png": ".\\src\\main\\resources\\global\\Logo.png",
     "shepot.png": ".\\src\\main\\resources\\mainmenu\\shepot.png",
@@ -36,6 +44,9 @@
     "GeneratorStruct.png": ".\\src\\main\\resources\\struct\\GeneratorStruct.png",
     "MainStruct.png": ".\\src\\main\\resources\\struct\\MainStruct.png",
     "MeasuringToolStruct.png": ".\\src\\main\\resources\\struct\\MeasuringToolStruct.png",
-    "MicroStruct.png": ".\\src\\main\\resources\\struct\\MicroStruct.png"
+    "MicroStruct.png": ".\\src\\main\\resources\\struct\\MicroStruct.png",
+    "f.pdf": ".\\src\\main\\resources\\help\\f.pdf",
+    "y.pdf": ".\\src\\main\\resources\\help\\y.pdf",
+    "l.pdf": ".\\src\\main\\resources\\help\\l.pdf"
   }
 }
