@@ -12,7 +12,17 @@
     "exit": "Выход"
   },
   "paths": {
+    "Logo.png": ".\\src\\main\\resources\\global\\Logo.png",
     "shepot.png": ".\\src\\main\\resources\\mainmenu\\shepot.png",
-    "Logo.png": ".\\src\\main\\resources\\global\\Logo.png"
+    "AcousticStruct.png": ".\\src\\main\\resources\\struct\\AcousticStruct.png",
+    "AcousticStruct2.png": ".\\src\\main\\resources\\struct\\AcousticStruct2.png",
+    "ArrowNextPRPL.png": ".\\src\\main\\resources\\struct\\ArrowNextPRPL.png",
+    "ArrowBackPRPL.png": ".\\src\\main\\resources\\struct\\ArrowBackPRPL.png",
+    "ArrowReturnPRPL.png": ".\\src\\main\\resources\\struct\\ArrowReturnPRPL.png",
+    "GeneratorStruct.png": ".\\src\\main\\resources\\struct\\GeneratorStruct.png",
+    "MainStruct.png": ".\\src\\main\\resources\\struct\\MainStruct.png",
+    "MeasuringToolStruct.png": ".\\src\\main\\resources\\struct\\MeasuringToolStruct.png",
+    "MicroStruct.png": ".\\src\\main\\resources\\struct\\MicroStruct.png"
+
   }
 }

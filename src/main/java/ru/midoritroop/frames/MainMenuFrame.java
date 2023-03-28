@@ -21,8 +21,10 @@ public class MainMenuFrame extends JFrame {
         RMan.buildStrings(); // building ResourceManager contents
 
         createMenu(); // calling constructors of screen panels
+        struct = new StructFrame(e -> crd.show(box, "menu"));
 
         box.add("menu", menu); // adding elements in container
+        box.add("struct", struct);
 
         //---------------------------------------------------------------------------
 
@@ -51,7 +53,7 @@ public class MainMenuFrame extends JFrame {
 
         JLabel txt = new JLabel();
         txt.setText(RMan.getString("mainMenuFrame", "mainMenuDesc"));
-        txt.setForeground(RMan.color.textColor);
+        txt.setForeground(RMan.color.textDarkBlue);
         txt.setFont(new Font("Calibri", Font.BOLD, 40 ));
         txt.setBounds(500, 0, 700, 200);
         menu.add(txt);
@@ -66,28 +68,28 @@ public class MainMenuFrame extends JFrame {
         // Creating Review button
         buttons.add(createMainMenuButton(
                 RMan.getString("mainMenuFrame", "review"),
-                RMan.color.textColor, RMan.color.lightBlueBtn,
+                RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 10, e -> crd.show(box, "review")));
         // Creating Contents button
         buttons.add(createMainMenuButton(
                 RMan.getString("mainMenuFrame", "contents"),
-                RMan.color.textColor, RMan.color.lightBlueBtn,
+                RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 345, 10, e ->  crd.show(box, "contents")));
 
         // Creating Struct button
         buttons.add(createMainMenuButton(
                 RMan.getString("mainMenuFrame", "struct"),
-                RMan.color.textColor, RMan.color.lightBlueBtn,
+                RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 345, 220, e -> crd.show(box, "struct")));
         // Creating Learn button
         buttons.add(createMainMenuButton(
                 RMan.getString("mainMenuFrame", "study"),
-                RMan.color.textColor, RMan.color.lightBlueBtn,
+                RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 110, e -> crd.show(box, "study")));
         // Creating Help button
         buttons.add(createMainMenuButton(
                 RMan.getString("mainMenuFrame", "help"),
-                RMan.color.textColor, RMan.color.lightBlueBtn,
+                RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 220, e -> crd.show(box, "help")));
         // Creating Exit Button
         buttons.add(createMainMenuButton(

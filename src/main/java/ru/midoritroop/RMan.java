@@ -3,10 +3,11 @@ package ru.midoritroop;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
+
+import java.awt.Color;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -15,13 +16,15 @@ import static java.lang.System.exit;
 public class RMan {
 
     public static final class color {
-        public static java.awt.Color darkCyan = new java.awt.Color(66, 122, 171, 134);
-        public static java.awt.Color lightBlueBtn = new java.awt.Color(162, 226, 245);
-        public static java.awt.Color greyCyan = new java.awt.Color(42, 55, 63);
-        public static java.awt.Color greyExitButton = new java.awt.Color(81, 90, 101);
-        public static java.awt.Color background = new java.awt.Color(234, 255, 255);
-        public static java.awt.Color textColor = new java.awt.Color(0x3d74a6);
-        public static java.awt.Color btmTopBars = new java.awt.Color(197, 230, 236);
+        public static Color darkCyan = new java.awt.Color(66, 122, 171, 134);
+        public static Color lightBlueBtn = new java.awt.Color(162, 226, 245);
+        public static Color greyCyan = new java.awt.Color(42, 55, 63);
+        public static Color lightPurple = new Color(103, 82, 128);;
+        public static Color greyExitButton = new java.awt.Color(81, 90, 101);
+        public static Color background = new java.awt.Color(237, 239, 246);
+        public static Color textDarkBlue = new java.awt.Color(0x3d74a6);
+        public static Color textLilac = new Color(0x6e67a0);
+        public static Color btmTopBars = new Color(193, 197, 220);
     }
 
     private static volatile RMan instance;
