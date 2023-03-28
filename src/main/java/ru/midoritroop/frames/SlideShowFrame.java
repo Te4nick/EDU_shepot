@@ -141,6 +141,18 @@ public class SlideShowFrame extends JPanel {
 
     }
 
+    protected void addImage(JPanel parent, String path, int x, int y, int width, int height) {
+        JLabel img = new JLabel();
+        ImageIcon unit = new ImageIcon(path);
+        Image image = unit.getImage();
+        Image newImg;
+        img.setBounds(x, y, width, height);
+        newImg = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
+        unit = new ImageIcon(newImg);
+        img.setVerticalAlignment(JLabel.TOP);
+        img.setIcon(unit);
+        parent.add(img);
+    }
     protected void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
                            String text, int textX, int textY, int textWidth, int textHeight, String slide) {
 
