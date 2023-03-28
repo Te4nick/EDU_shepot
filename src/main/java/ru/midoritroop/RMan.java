@@ -1,16 +1,20 @@
 package ru.midoritroop;
 
-import java.awt.*;
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
+import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-public class ResourceManager {
+import static java.lang.System.exit;
 
-    public static final class Color {
+public class RMan {
+
+    public static final class color {
         public static java.awt.Color darkCyan = new java.awt.Color(66, 122, 171, 134);
         public static java.awt.Color lightBlueBtn = new java.awt.Color(162, 226, 245);
         public static java.awt.Color greyCyan = new java.awt.Color(42, 55, 63);
@@ -20,54 +24,44 @@ public class ResourceManager {
         public static java.awt.Color btmTopBars = new java.awt.Color(197, 230, 236);
     }
 
-    private static volatile ResourceManager instance;
+    private static volatile RMan instance;
 
-    public static ResourceManager getInstance() {
-        ResourceManager localInstance = instance;
+    public static RMan getInstance() {
+        RMan localInstance = instance;
         if (localInstance == null) {
-            synchronized (ResourceManager.class) {
+            synchronized (RMan.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new ResourceManager();
+                    instance = localInstance = new RMan();
                 }
             }
         }
         return localInstance;
     }
 
+    private final static Logger log = Logger.getLogger(RMan.class.getName());
+    private final static String stringsRU = ".\\src\\main\\resources\\strings\\ru.json";
 
-    private final static Logger log = Logger.getLogger(ResourceManager.class.getName());
-    private final static String stringsPath = ".\\src\\main\\resources\\strings.properties";
-    private final static String resourcesPath = ".\\src\\main\\resources\\resources_paths.properties";
-    private final static Properties strings = new Properties();
-    private final static Properties resources = new Properties();
+    private static Map<String, Map<String, String>> stringIndex;
 
-    private ResourceManager() {}
-
-    public static String string(String string) {
-        if (strings.isEmpty()) try {
-            strings.load(new FileInputStream(stringsPath));
-        } catch (IOException e) {
-            log.log(Level.SEVERE, stringsPath + " not found");
-            System.exit(1);
-        }
-        return strings.getProperty(string);
-    }
+    private RMan() {}
 
     public static void buildStrings() {
-        resources.putAll(Map.of(
-                "mainMenuDesc", "<html>Автоматизированный комплекс<br>для проведения акустических<br>и виброакустических измерений<br>''ШЕПОТ''</html>",
-                "review", "Обзор"));
+        try {
+            Gson gson = new Gson();
+            JsonReader ruReader = new JsonReader(new FileReader(stringsRU));
+            stringIndex = gson.fromJson(ruReader, HashMap.class);
+        } catch (FileNotFoundException f) {
+            log.log(Level.SEVERE, "File not found %s".formatted(stringsRU));
+            exit(404);
+        }
     }
 
-    public static String path(String string) {
+    public static String getString(String category, String key) {
+        return stringIndex.get(category).get(key);
+    }
 
-        if (resources.isEmpty()) try {
-            resources.load(new FileInputStream(resourcesPath));
-        } catch (IOException e) {
-            log.log(Level.SEVERE, resourcesPath + " not found");
-            System.exit(1);
-        }
-        return resources.getProperty(string);
+    public static String getPath(String key) {
+        return stringIndex.get("paths").get(key);
     }
 }

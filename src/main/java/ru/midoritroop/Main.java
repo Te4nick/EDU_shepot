@@ -1,5 +1,9 @@
-package ru.midoritroop;public class Main {
+package ru.midoritroop;
+
+import ru.midoritroop.frames.MainMenuFrame;
+
+public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        MainMenuFrame frame = new MainMenuFrame();
     }
 }

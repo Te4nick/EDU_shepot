@@ -1,0 +1,18 @@
+{
+  "global": {
+    "app": "Edu SHEPOT"
+  },
+  "mainMenuFrame": {
+    "mainMenuDesc": "<html>Автоматизированный комплекс<br>для проведения акустических<br>и виброакустических измерений<br>''ШЕПОТ''</html>",
+    "review": "Обзор",
+    "contents": "Состав",
+    "struct": "Структура",
+    "study": "Обучение",
+    "help": "Справка",
+    "exit": "Выход"
+  },
+  "paths": {
+    "shepot.png": ".\\src\\main\\resources\\mainmenu\\shepot.png",
+    "Logo.png": ".\\src\\main\\resources\\global\\Logo.png"
+  }
+}
