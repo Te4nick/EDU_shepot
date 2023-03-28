@@ -3,13 +3,13 @@ package ru.midoritroop;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-
-import java.awt.Color;
-import java.io.*;
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.System.exit;
 

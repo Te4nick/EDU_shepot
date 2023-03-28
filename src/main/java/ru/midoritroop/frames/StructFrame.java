@@ -8,16 +8,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class StructFrame extends JPanel {
-
-
-
-    private CardLayout crd;
+    private final CardLayout crd;
     private Container slideShow;
-    private JButton returnToMenu;
-    private JPanel firstSlide, secondSlide, thirdSlide, founthLide, fifthSlide;
+    private JPanel firstSlide, secondSlide, thirdSlide, fourthSlide, fifthSlide;
     StructFrame(ActionListener onReturn){
         crd = new CardLayout();
-        createComposition();
+        createComposition(onReturn);
         createFirstSlide();
         createSecondSlide();
         createThirdSlide();
@@ -27,11 +23,9 @@ public class StructFrame extends JPanel {
         slideShow.add("1", firstSlide);
         slideShow.add("2", secondSlide);
         slideShow.add("3", thirdSlide);
-        slideShow.add("4", founthLide);
+        slideShow.add("4", fourthSlide);
         slideShow.add("5", fifthSlide);
         crd.show(slideShow, "1");
-
-        returnToMenu.addActionListener(onReturn);
     }
     private JLabel hitbox(int x, int y, int width, int height, JLabel parent){
         JLabel part1 = new JLabel();
@@ -64,41 +58,10 @@ public class StructFrame extends JPanel {
         });
         return part1;
     }
-    private JLabel advHitBox(int x, int y, int width, int height, JLabel parent, String slide) {
-        JLabel part1 = new JLabel();
-        part1.setBounds(x, y,width,height);
-        part1.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                crd.show(slideShow, slide);
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                parent.setVisible(true);
-                parent.updateUI();
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                parent.setVisible(false);
-            }
-        });
-        return part1;
-    }
-    private JLabel createPanel(int x, int y, int widh, int height){
+    private JLabel createPanel(int x, int y, int width, int height){
         JLabel pnl = new JLabel();
-        pnl.setBounds(x, y, widh, height);
+        pnl.setBounds(x, y, width, height);
         pnl.setFont(new Font("Calibri", Font.BOLD, 18));
         pnl.setBackground(RMan.color.background);
         pnl.setForeground(RMan.color.textLilac);
@@ -108,14 +71,14 @@ public class StructFrame extends JPanel {
         pnl.setVisible(false);
         return pnl;
     }
-    private JPanel createCompSlide(Color color) {
+    private JPanel createCompSlide() {
         JPanel slide = new JPanel();
         slide.setLayout(null);
-        slide.setBackground(color);
+        slide.setBackground(Color.BLACK);
         slide.setBounds(0, 0, 1280, 605);
         return slide;
     }
-    private JPanel createSlide(String path, String name, boolean SideLayout, int fontsize) {
+    private JPanel createSlide(String path, String name, boolean SideLayout) {
         JPanel slide = new JPanel();
         slide.setLayout(null);
         slide.setBackground(RMan.color.background);
@@ -172,7 +135,7 @@ public class StructFrame extends JPanel {
 
         JLabel txt = new JLabel();
         txt.setText(name);
-        txt.setFont(new Font("Calibri", Font.BOLD, fontsize));
+        txt.setFont(new Font("Calibri", Font.BOLD, 70));
         txt.setHorizontalTextPosition(JLabel.CENTER);
         txt.setForeground(RMan.color.textLilac);
         topBar.add(txt);
@@ -180,9 +143,20 @@ public class StructFrame extends JPanel {
         slide.repaint();
         return slide;
     }
-    private void createComposition() {
+
+    private JButton createButton(String path, int x, int y, int width, int height, ActionListener e) {
+        JButton button = new JButton(new ImageIcon(path));
+        button.setBounds(x, y, width, height);
+        button.addActionListener(e);
+        button.setFocusable(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        return button;
+    }
+    private void createComposition(ActionListener listener) {
         this.setLayout(null);
-        slideShow = createCompSlide(Color.BLACK);
+        slideShow = createCompSlide();
         slideShow.setLayout(crd);
         this.add(slideShow);
         JPanel bottomNavBar = new JPanel();
@@ -190,113 +164,91 @@ public class StructFrame extends JPanel {
         bottomNavBar.setBounds(0, 605, 1280, 75);
         bottomNavBar.setBackground(RMan.color.btmTopBars);
         this.add(bottomNavBar);
+        // Return Button
+        bottomNavBar.add(createButton(RMan.getPath("ArrowReturnPRPL.png"),
+                50, 15, 100, 45, listener));
+        // Next Button
+        bottomNavBar.add(createButton(RMan.getPath("ArrowNextPRPL.png"),
+                680, 5, 65, 65, e -> crd.next(slideShow)));
+        // Back Button
+        bottomNavBar.add(createButton(RMan.getPath("ArrowBackPRPL.png"),
+                550, 5, 65, 65, e -> crd.previous(slideShow)));
 
-        returnToMenu = new JButton();
-        returnToMenu.setFocusable(false);
-        ImageIcon img = new ImageIcon(RMan.getPath("ArrowReturnPRPL.png"));
-        returnToMenu.setBounds(50, 15, 100, 45);
-        returnToMenu.setIcon(img);
-        returnToMenu.setContentAreaFilled(false);
-        returnToMenu.setFocusPainted(false);
-        returnToMenu.setBorderPainted(false);
-        bottomNavBar.add(returnToMenu);
-
-        ImageIcon nxt = new ImageIcon(RMan.getPath("ArrowNextPRPL.png"));
-        JButton nextSlide = new JButton(nxt);
-        nextSlide.setFocusable(false);
-        nextSlide.setBounds(680, 5, 65, 65);
-        nextSlide.addActionListener(e -> crd.next(slideShow));
-        nextSlide.setContentAreaFilled(false);
-        nextSlide.setFocusPainted(false);
-        nextSlide.setBorderPainted(false);
-        bottomNavBar.add(nextSlide);
-
-        ImageIcon prv = new ImageIcon(RMan.getPath("ArrowBackPRPL.png"));
-        JButton prevSlide = new JButton(prv);
-        prevSlide.setFocusable(false);
-        prevSlide.setBounds(550, 5, 65, 65);
-        prevSlide.addActionListener(e -> crd.previous(slideShow));
-        prevSlide.setContentAreaFilled(false);
-        prevSlide.setFocusPainted(false);
-        prevSlide.setBorderPainted(false);
-        bottomNavBar.add(prevSlide);
-
-        JButton rtrnCont = new JButton("На главную");
-        rtrnCont.setFocusable(false);
-        rtrnCont.setBounds(950, 5, 265, 65);
-        rtrnCont.setFont(new Font("Calibri", Font.BOLD, 43));
-        rtrnCont.setForeground(RMan.color.textLilac);
-        rtrnCont.setVerticalAlignment(JButton.CENTER);
-        rtrnCont.addActionListener(e -> crd.show(slideShow, "1"));
-        rtrnCont.setContentAreaFilled(false);
-        rtrnCont.setFocusPainted(false);
-        rtrnCont.setBorderPainted(false);
-        bottomNavBar.add(rtrnCont);
     }
+
+    private JLabel createInstructions(String text, int x, int y, int width, int height) {
+        JLabel instructions = new JLabel();
+        instructions.setBounds(x, y, width, height);
+        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
+        instructions.setHorizontalTextPosition(JLabel.CENTER);
+        instructions.setForeground(RMan.color.textLilac);
+        instructions.setHorizontalAlignment(JLabel.CENTER);
+        instructions.setText(text);
+        return instructions;
+    }
+
+    private void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
+                           String text, int textX, int textY, int textWidth, int textHeight, String slide) {
+        JLabel label = createPanel(textX,textY,textWidth,textHeight);
+        label.setText(text);
+        JLabel hitbox = new JLabel();
+        hitbox.setBounds(boxX, boxY, boxWidth, boxHeight);
+        hitbox.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                crd.show(slideShow, slide);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                label.setVisible(true);
+                label.updateUI();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                label.setVisible(false);
+            }
+        });
+        parent.add(label);
+        parent.add(hitbox);
+    }
+
     private void createFirstSlide() {
-        firstSlide = createSlide(RMan.getPath("MainStruct.png"), "Структура", true, 70);
+        firstSlide = createSlide(RMan.getPath("MainStruct.png"), "Структура", true);
 
-        JLabel instructions = new JLabel();
-        instructions.setBounds(830, 80, 430, 250);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText("<html>На данном рисунке изображена схема работы комплекса при акустических и виброакустических измерениях.</html>");
-        firstSlide.add(instructions);
+        firstSlide.add(createInstructions(RMan.getString("structFrame", "slide1Desc"),
+                830, 80, 430, 500));
 
-        JLabel generalInfo = new JLabel();
-        generalInfo.setBounds(830, 270, 430, 250);
-        generalInfo.setFont(new Font("Calibri", Font.BOLD, 28));
-        generalInfo.setHorizontalTextPosition(JLabel.CENTER);
-        generalInfo.setForeground(RMan.color.textLilac);
-        generalInfo.setHorizontalAlignment(JLabel.LEFT);
-        generalInfo.setText("<html>Нажмите на элемент комплекса для получения большей информации о нем.</html>");
-        firstSlide.add(generalInfo);
+        addHitbox(firstSlide, 107,154,244-107,253-154,
+                RMan.getString("structFrame", "slide1H1"), 256,194,150,60, "2");
 
-        JLabel micro = createPanel(256,194,150,60);
-        micro.setText("<html>Измерительный микрофон</html>");
-        JLabel htb1 = advHitBox(107,154,244-107,253-154, micro, "2");
-        JLabel htb11 = advHitBox(412,155,549-412,254-155, micro, "2");
-        firstSlide.add(micro);
-        firstSlide.add(htb11);
-        firstSlide.add(htb1);
+        addHitbox(firstSlide, 412,155,549-412,254-155,
+                RMan.getString("structFrame", "slide1H1"), 256,194,150,60, "2");
 
-        JLabel acustic = createPanel(483,91,150,60);
-        acustic.setText("<html>Акустический излучатель</html>");
-        JLabel htb2 = advHitBox(597,152,740-597,257-152, acustic, "3");
-        firstSlide.add(acustic);
-        firstSlide.add(htb2);
+        addHitbox(firstSlide, 597,152,740-597,257-152,
+                RMan.getString("structFrame", "slide1H2"), 483,91,150,60, "3");
 
-        JLabel noise = createPanel(584,412, 150,60);
-        noise.setText("<html>Генератор шума</html>");
-        JLabel htb3 = advHitBox(603,292,746-603,400-292, noise, "4");
-        firstSlide.add(noise);
-        firstSlide.add(htb3);
+        addHitbox(firstSlide, 603,292,746-603,400-292,
+                RMan.getString("structFrame", "slide1H3"), 584,412, 150,60, "4");
 
-        JLabel pom = createPanel(512,431, 170,60);
-        pom.setText("<html>Средство измерения помех</html>");
-        JLabel htb4 = advHitBox(247,405,491-247,531-405,pom, "5");
-        firstSlide.add(pom);
-        firstSlide.add(htb4);
+        addHitbox(firstSlide, 247,405,491-247,531-405,
+                        RMan.getString("structFrame", "slide1H4"), 512,431, 170,60, "5");
 
-        JLabel wall = createPanel(391,269, 150,130);
-        wall.setText("<html>Ограждающая конструкция, для которой проводятся измерения</html>");
-        JLabel htb5 = hitbox(287,121,362-287,346-121, wall);
-        firstSlide.add(wall);
-        firstSlide.add(htb5);
+        addHitbox(firstSlide, 287,121,362-287,346-121,
+                                RMan.getString("structFrame", "slide1H5"), 391,269, 150,130, "1");
     }
-    private void createSecondSlide() {
-        secondSlide = createSlide("", "Измерительный микрофон", false, 70);
+    private void createSecondSlide() { // TODO: Refactor hitboxes
+        secondSlide = createSlide("", "Измерительный микрофон", false);
 
-        JLabel instructions = new JLabel();
-        instructions.setBounds(830, 180, 430, 250);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText("<html>Для измерений комплекса «Шепот» используются два измерительных PCB микрофона. Далее дана структурная схема работы микрофона такого типа.</html>");
-        secondSlide.add(instructions);
+        secondSlide.add(createInstructions(RMan.getString("structFrame", "slide2Desc"),
+                830, 180, 430, 250));
 
         JLabel msg1 = createPanel(391,187,150,60);
         msg1.setText("<html>Кабель</html>");
@@ -387,36 +339,16 @@ public class StructFrame extends JPanel {
         secondSlide.add(img);
     }
     private void createThirdSlide() {
-        thirdSlide = createSlide("", "Акустический излучатель", false, 70);
+        thirdSlide = createSlide("", "Акустический излучатель", false);
 
-        JLabel instructions = new JLabel();
-        instructions.setBounds(830, 80, 430, 450);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText("<html>Для создания звука подаваемого от генератора шума, акустический излучатель синтезирует получаемые сигналы," +
-                " используя цифроаналоговое преобразование. Далее даны схемы работы цифроаналогового преобразования и синтезирования звука для" +
-                " его дальнейшего воспроизведения излучателем.</html>");
-        thirdSlide.add(instructions);
+        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc"),
+                830, 80, 430, 450));
 
-        JLabel instructions1 = new JLabel();
-        instructions1.setBounds(100,240, 630, 100);
-        instructions1.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions1.setHorizontalTextPosition(JLabel.CENTER);
-        instructions1.setForeground(RMan.color.textLilac);
-        instructions1.setHorizontalAlignment(JLabel.CENTER);
-        instructions1.setText("<html>«Схема цифроаналогового преобразования»</html>");
-        thirdSlide.add(instructions1);
+        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc1"),
+                100,240, 630, 100));
 
-        JLabel instructions2 = new JLabel();
-        instructions2.setBounds(226,428, 430, 100);
-        instructions2.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions2.setHorizontalTextPosition(JLabel.CENTER);
-        instructions2.setForeground(RMan.color.textLilac);
-        instructions2.setHorizontalAlignment(JLabel.CENTER);
-        instructions2.setText("<html>«Схема синтезатора»</html>");
-        thirdSlide.add(instructions2);
+        thirdSlide.add(createInstructions(RMan.getString("structFrame", "slide3Desc2"),
+                226,428, 430, 100));
 
         JLabel msg1 = createPanel(125,82,250,60);
         msg1.setText("<html>Дискретный по времени и значению сигнал с ошибками</html>");
@@ -541,52 +473,46 @@ public class StructFrame extends JPanel {
         thirdSlide.add(img2);
     }
     private void createFourthSlide() {
-        founthLide = createSlide("", "Генератор шума", false, 70);
+        fourthSlide = createSlide("", "Генератор шума", false);
 
-        JLabel instructions = new JLabel();
-        instructions.setBounds(830, 180, 430, 250);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 28));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText("<html>В комплекте «Шепот» поставляется генератор шума «Шорох-2МИ». Далее дана структурная схема генератора шума</html>");
-        founthLide.add(instructions);
+        fourthSlide.add(createInstructions(RMan.getString("structFrame", "slide4Desc"),
+                830, 180, 430, 250));
 
         JLabel msg1 = createPanel(37,138,250,60);
         msg1.setText("<html>Источник шумового сигнала, выполненный на резисторе</html>");
         JLabel htb1 = hitbox(71,198,218-71,333-198, msg1);
-        founthLide.add(msg1);
-        founthLide.add(htb1);
+        fourthSlide.add(msg1);
+        fourthSlide.add(htb1);
 
         JLabel msg2  = createPanel(222,132,270,80);
         msg2.setText("<html>Повышает сигнал до уровня напряжения линейного входа</html>");
         JLabel htb2 = hitbox(258,198,407-258,330-198, msg2);
-        founthLide.add(msg2);
-        founthLide.add(htb2);
+        fourthSlide.add(msg2);
+        fourthSlide.add(htb2);
 
         JLabel msg3  = createPanel(395,78,300,120);
         msg3.setText("<html>Пассивное сверхвысокочастотное устройство, которое изменяет и исправляет спектральные плотности сигнала</html>");
         JLabel htb3 = hitbox(447,199,595-447,330-199, msg3);
-        founthLide.add(msg3);
-        founthLide.add(htb3);
+        fourthSlide.add(msg3);
+        fourthSlide.add(htb3);
 
         JLabel msg4  = createPanel(5,360,250,200);
         msg4.setText("<html>Маломощный генератор электрических колебаний, применяемый для преобразования частот сигнала, а данном случае источник опорного сигнала для перемножения</html>");
         JLabel htb4 = hitbox(259,371,406-259,502-371, msg4);
-        founthLide.add(msg4);
-        founthLide.add(htb4);
+        fourthSlide.add(msg4);
+        fourthSlide.add(htb4);
 
         JLabel msg5  = createPanel(390,514,250,80);
         msg5.setText("<html>Переводит сигнал из области звуковых частот в радиочастоты</html>");
         JLabel htb5 = hitbox(447,369,593-447,502-369, msg5);
-        founthLide.add(msg5);
-        founthLide.add(htb5);
+        fourthSlide.add(msg5);
+        fourthSlide.add(htb5);
 
         JLabel msg6  = createPanel(589,511,250,80);
         msg6.setText("<html>Усиливает мощность сигнала для его перенаправления на акустический излучатель</html>");
         JLabel htb6 = hitbox(630,370,781-630,503-370, msg6);
-        founthLide.add(msg6);
-        founthLide.add(htb6);
+        fourthSlide.add(msg6);
+        fourthSlide.add(htb6);
 
         JLabel img = new JLabel();
         ImageIcon unit = new ImageIcon(RMan.getPath("GeneratorStruct.png"));
@@ -597,19 +523,13 @@ public class StructFrame extends JPanel {
         unit = new ImageIcon(newimg);
         img.setVerticalAlignment(JLabel.TOP);
         img.setIcon(unit);
-        founthLide.add(img);
+        fourthSlide.add(img);
     }
     private void createFifthSlide() {
-        fifthSlide = createSlide(RMan.getPath("MeasuringToolStruct.png"), "Средство измерения помех", true, 70);
+        fifthSlide = createSlide(RMan.getPath("MeasuringToolStruct.png"), "Средство измерения помех", true);
 
-        JLabel instructions = new JLabel();
-        instructions.setBounds(830, 80, 430, 450);
-        instructions.setFont(new Font("Calibri", Font.BOLD, 30));
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
-        instructions.setForeground(RMan.color.textLilac);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setText("<html>В случае комплекса «Шепот» для измерения помех используется средство измерения «Larson&Davis 824». Его структурная схема</html>");
-        fifthSlide.add(instructions);
+        fifthSlide.add(createInstructions(RMan.getString("structFrame", "slide5Desc"),
+                830, 80, 430, 450));
 
         JLabel msg1 = createPanel(37,138,150,60);
         msg1.setText("<html>Микрофон и предусилитель</html>");
@@ -727,4 +647,3 @@ public class StructFrame extends JPanel {
     }
 
 }
-
