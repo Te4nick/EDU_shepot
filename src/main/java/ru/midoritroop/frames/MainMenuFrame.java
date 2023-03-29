@@ -12,6 +12,8 @@ public class MainMenuFrame extends JFrame {
     JPanel menu, review, composition, struct, study, help;
     Container box;
 
+    String name = this.getClass().getName();
+
     public MainMenuFrame() {
 
         box = getContentPane(); // set up for screens panels containers
@@ -38,7 +40,6 @@ public class MainMenuFrame extends JFrame {
 
         ImageIcon image = new ImageIcon(RMan.getPath("Logo.png"));
         this.setIconImage(image.getImage());
-        System.out.println(MainMenuFrame.class.getName());
     }
     private void createMenu() {
         menu = new JPanel();
@@ -54,7 +55,7 @@ public class MainMenuFrame extends JFrame {
         menu.setLayout(null);
 
         JLabel txt = new JLabel();
-        txt.setText(RMan.getString("mainMenuFrame", "mainMenuDesc"));
+        txt.setText(RMan.getString(name, "mainMenuDesc"));
         txt.setForeground(RMan.color.textDarkBlue);
         txt.setFont(new Font("Calibri", Font.BOLD, 40 ));
         txt.setBounds(500, 0, 700, 200);
@@ -68,40 +69,34 @@ public class MainMenuFrame extends JFrame {
         buttons.setLayout(new GridLayout(3, 3, 10, 10));
 
         // Creating Review button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "review"),
+        buttons.add(createMainMenuButton( "review",
                 RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 10, e -> crd.show(box, "review")));
         // Creating Contents button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "contents"),
+        buttons.add(createMainMenuButton( "contents",
                 RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 345, 10, e ->  crd.show(box, "contents")));
 
         // Creating Struct button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "struct"),
+        buttons.add(createMainMenuButton( "struct",
                 RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 345, 220, e -> crd.show(box, "struct")));
         // Creating Learn button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "study"),
+        buttons.add(createMainMenuButton("study",
                 RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 110, e -> crd.show(box, "study")));
         // Creating Help button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "help"),
+        buttons.add(createMainMenuButton("help",
                 RMan.color.textDarkBlue, RMan.color.lightBlueBtn,
                 25, 220, e -> crd.show(box, "help")));
         // Creating Exit Button
-        buttons.add(createMainMenuButton(
-                RMan.getString("mainMenuFrame", "exit"),
+        buttons.add(createMainMenuButton("exit",
                 RMan.color.greyCyan, RMan.color.greyExitButton,
                 345, 110, e -> super.dispose()));
     }
 
-    private JButton createMainMenuButton(String text, Color foreground, Color background, int x, int y, ActionListener l) {
-        JButton btn = new JButton(text);
+    private JButton createMainMenuButton(String stringId, Color foreground, Color background, int x, int y, ActionListener l) {
+        JButton btn = new JButton(RMan.getString(name, stringId));
         btn.setFocusable(false);
         btn.setFont(new Font("Calibri", Font.BOLD, 45));
         btn.setForeground(foreground);

@@ -3,6 +3,7 @@ package ru.midoritroop.frames;
 import ru.midoritroop.RMan;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -12,25 +13,28 @@ public class SlideShowFrame extends JPanel {
     protected CardLayout crd;
     protected Container slideShow;
 
+    protected String name;
+
     SlideShowFrame(ActionListener onReturn) {
         this.crd = new CardLayout();
+        this.name = this.getClass().getName();
         createComposition(onReturn);
     }
 
-
-    protected JLabel createDesc(String text, int fontSize, boolean border, int x, int y, int width, int height) {
+    protected JLabel addDesc(JPanel parent, String stringId, int fontSize, boolean border, int x, int y, int width, int height) {
         JLabel desc = new JLabel();
         desc.setBounds(x, y, width, height);
         desc.setFont(new Font("Calibri", Font.BOLD, fontSize));
         desc.setHorizontalTextPosition(JLabel.CENTER);
         desc.setForeground(RMan.color.textLilac);
         desc.setHorizontalAlignment(border ? JLabel.LEFT : JLabel.CENTER);
-        desc.setText(text);
+        desc.setText(RMan.getString(name, stringId));
         if (border) {
             desc.setOpaque(true);
             desc.setBorder(BorderFactory.createLineBorder(RMan.color.lightPurple, 5));
             desc.setVisible(false);
         }
+        parent.add(stringId, desc);
         return desc;
     }
 
@@ -42,7 +46,7 @@ public class SlideShowFrame extends JPanel {
         return slide;
     }
 
-    protected JPanel createSlide(String path, String name, boolean SideLayout) {
+    protected JPanel createSlide(String name) {
         JPanel slide = new JPanel();
         slide.setLayout(null);
         slide.setBackground(RMan.color.background);
@@ -52,20 +56,6 @@ public class SlideShowFrame extends JPanel {
         topBar.setBounds(0, 0, 1280, 75);
         topBar.setBackground(RMan.color.btmTopBars);
 
-        JLabel img = new JLabel();
-        ImageIcon unit = new ImageIcon(path);
-        Image image = unit.getImage();
-        Image newimg;
-        if (!SideLayout) {
-            img.setBounds(50, 150, 750, 400);
-            newimg = image.getScaledInstance(750, 400, java.awt.Image.SCALE_SMOOTH);
-        } else {
-            img.setBounds(50, 85, 750, 500);
-            newimg = image.getScaledInstance(750, 500, java.awt.Image.SCALE_SMOOTH);
-        }
-        unit = new ImageIcon(newimg);
-        img.setVerticalAlignment(JLabel.TOP);
-        img.setIcon(unit);
         slide.setLayout(null);
         slide.addMouseListener(new MouseListener() {
             @Override
@@ -74,31 +64,17 @@ public class SlideShowFrame extends JPanel {
                 int y = e.getY();
                 System.out.println(x + "," + y);
             }
-
             @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
+            public void mousePressed(MouseEvent e) {}
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
+            public void mouseReleased(MouseEvent e) {}
             @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
+            public void mouseEntered(MouseEvent e) {}
             @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
+            public void mouseExited(MouseEvent e) {}
         });
-        slide.add(img);
-
         JLabel txt = new JLabel();
-        txt.setText(name);
+        txt.setText(RMan.getString(this.name, name));
         txt.setFont(new Font("Calibri", Font.BOLD, 70));
         txt.setHorizontalTextPosition(JLabel.CENTER);
         txt.setForeground(RMan.color.textLilac);
@@ -138,12 +114,11 @@ public class SlideShowFrame extends JPanel {
         // Back Button
         bottomNavBar.add("arrowBack", createButton(RMan.getPath("ArrowBackPRPL.png"),
                 550, 5, 65, 65, e -> crd.previous(slideShow)));
-
     }
 
-    protected void addImage(JPanel parent, String path, int x, int y, int width, int height) {
+    protected void addImage(JPanel parent, String filename, int x, int y, int width, int height) {
         JLabel img = new JLabel();
-        ImageIcon unit = new ImageIcon(path);
+        ImageIcon unit = new ImageIcon(RMan.getPath(filename));
         Image image = unit.getImage();
         Image newImg;
         img.setBounds(x, y, width, height);
@@ -154,37 +129,25 @@ public class SlideShowFrame extends JPanel {
         parent.add(img);
     }
     protected void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
-                           String text, int textX, int textY, int textWidth, int textHeight, String slide) {
-
-        JLabel label = createDesc(text, 18, true, textX, textY, textWidth, textHeight);
+                           String stringId, int textX, int textY, int textWidth, int textHeight, String slide) {
+        JLabel label = addDesc(parent, stringId, 18, true, textX, textY, textWidth, textHeight);
         JLabel hitbox = new JLabel();
         hitbox.setBounds(boxX, boxY, boxWidth, boxHeight);
         hitbox.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
+            public void mouseClicked(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {
-                crd.show(slideShow, slide);
-            }
-
+            public void mousePressed(MouseEvent e) { crd.show(slideShow, slide); }
             @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
+            public void mouseReleased(MouseEvent e) {}
             @Override
             public void mouseEntered(MouseEvent e) {
                 label.setVisible(true);
                 label.updateUI();
             }
-
             @Override
-            public void mouseExited(MouseEvent e) {
-                label.setVisible(false);
-            }
+            public void mouseExited(MouseEvent e) { label.setVisible(false); }
         });
-        parent.add(label);
         parent.add(hitbox);
     }
 }
