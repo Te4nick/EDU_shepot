@@ -25,10 +25,12 @@ public class MainMenuFrame extends JFrame {
         createMenu(); // calling constructors of screen panels
         struct = new StructFrame(e -> crd.show(box, "menu"));
         help = new HelpFrame(e -> crd.show(box, "menu"));
+        review = new ReviewFrame(e -> crd.show(box, "menu"));
 
         box.add("menu", menu); // adding elements in container
         box.add("struct", struct);
         box.add("help", help);
+        box.add("review", review);
 
         //---------------------------------------------------------------------------
 
