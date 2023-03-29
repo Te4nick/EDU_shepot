@@ -38,7 +38,7 @@ public class SlideShowFrame extends JPanel {
         return desc;
     }
 
-    private JPanel createCompSlide() {
+    private JPanel createBlankSlide() {
         JPanel slide = new JPanel();
         slide.setLayout(null);
         slide.setBackground(Color.BLACK);
@@ -97,7 +97,7 @@ public class SlideShowFrame extends JPanel {
 
     private void createComposition(ActionListener listener) {
         this.setLayout(null);
-        slideShow = createCompSlide();
+        slideShow = createBlankSlide();
         slideShow.setLayout(crd);
         this.add(slideShow);
         JPanel bottomNavBar = new JPanel();
