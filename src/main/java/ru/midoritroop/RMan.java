@@ -3,7 +3,7 @@ package ru.midoritroop;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -13,8 +13,15 @@ import java.util.logging.Logger;
 
 import static java.lang.System.exit;
 
+/**
+ * RMan - Resource Manager for the whole project.
+ * Realized as Singleton Pattern to have only instance of global Manager
+ */
 public class RMan {
 
+    /**
+     * Inner color class serves enum function to use previously declared colors in whole project
+     */
     public static final class color {
         public static Color darkCyan = new java.awt.Color(66, 122, 171, 134);
         public static Color lightBlueBtn = new java.awt.Color(162, 226, 245);
@@ -29,6 +36,10 @@ public class RMan {
 
     private static volatile RMan instance;
 
+    /**
+     * Returns one and only instance of RMan
+     * @return Only instance of RMan
+     */
     public static RMan getInstance() {
         RMan localInstance = instance;
         if (localInstance == null) {
@@ -47,8 +58,14 @@ public class RMan {
 
     private static Map<String, Map<String, String>> stringIndex;
 
+    /**
+     * Private constructor for Singleton Pattern realization
+     */
     private RMan() {}
 
+    /**
+     * Initiates import of JSON string file into project. Must be called before any usage of other methods.
+     */
     public static void buildStrings() {
         try {
             Gson gson = new Gson();
@@ -60,10 +77,21 @@ public class RMan {
         }
     }
 
+    /**
+     * Returns string value from JSON file
+     * @param category Category name as Class name of desired Frame class
+     * @param key Key of desired string in category
+     * @return Desired string value
+     */
     public static String getString(String category, String key) {
         return stringIndex.get(category).get(key);
     }
 
+    /**
+     * Returns path of file in res folder written in JSON file
+     * @param key Key of desired file to get path of
+     * @return Desired file relative project path
+     */
     public static String getPath(String key) {
         return stringIndex.get("paths").get(key);
     }

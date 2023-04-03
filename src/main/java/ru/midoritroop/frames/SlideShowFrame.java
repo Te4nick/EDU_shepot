@@ -9,18 +9,37 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Basic class to realize similar to PowerPoint presentation visual representation.
+ */
 public class SlideShowFrame extends JPanel {
     protected CardLayout crd;
     protected Container slideShow;
 
     protected String name;
 
+    /**
+     * Basic constructor setting main layout and class name
+     * @param onReturn ActionListener action to perform on Frame exit
+     */
     SlideShowFrame(ActionListener onReturn) {
         this.crd = new CardLayout();
         this.name = this.getClass().getName();
         createComposition(onReturn);
     }
 
+    /**
+     * Creates description and adds it to the specified slide. Returns instance in case of need
+     * @param parent JPanel to add description to
+     * @param stringId ID of a string in JSON file to grab by RMan
+     * @param fontSize Description font size
+     * @param border True - create border around, False - Ignore
+     * @param x Description x position
+     * @param y Description y position
+     * @param width Description width
+     * @param height Description height
+     * @return JLabel - created description
+     */
     protected JLabel addDesc(JPanel parent, String stringId, int fontSize, boolean border, int x, int y, int width, int height) {
         JLabel desc = new JLabel();
         desc.setBounds(x, y, width, height);
@@ -38,6 +57,10 @@ public class SlideShowFrame extends JPanel {
         return desc;
     }
 
+    /**
+     * Creates Blank Slide to initialize instance of class
+     * @return JPanel blank slide
+     */
     private JPanel createBlankSlide() {
         JPanel slide = new JPanel();
         slide.setLayout(null);
@@ -46,6 +69,11 @@ public class SlideShowFrame extends JPanel {
         return slide;
     }
 
+    /**
+     * Creates and returns basic slide layout
+     * @param name String id to RMan to grab from JSON
+     * @return JPanel built slide
+     */
     protected JPanel createSlide(String name) {
         JPanel slide = new JPanel();
         slide.setLayout(null);
@@ -84,6 +112,16 @@ public class SlideShowFrame extends JPanel {
         return slide;
     }
 
+    /**
+     * Creates and Returns JButton
+     * @param path String ID to RMan to grab from JSON
+     * @param x Button x position
+     * @param y Button y position
+     * @param width Button width
+     * @param height Button height
+     * @param e ActionListener to execute on button press
+     * @return Built JButton
+     */
     private JButton createButton(String path, int x, int y, int width, int height, ActionListener e) {
         JButton button = new JButton(new ImageIcon(path));
         button.setBounds(x, y, width, height);
@@ -95,6 +133,10 @@ public class SlideShowFrame extends JPanel {
         return button;
     }
 
+    /**
+     * Creates Basic SlideShow Layout: blank slide, bottom navigation bar, top name bar
+     * @param listener ActionListener action to perform on Frame exit
+     */
     private void createComposition(ActionListener listener) {
         this.setLayout(null);
         slideShow = createBlankSlide();
@@ -116,6 +158,15 @@ public class SlideShowFrame extends JPanel {
                 550, 5, 65, 65, e -> crd.previous(slideShow)));
     }
 
+    /**
+     * Creates, scales and adds Image to the specified slide of slideshow
+     * @param parent JPanel to add image to
+     * @param filename Path ID to RMan to grab from JSON
+     * @param x Image x position
+     * @param y Image y position
+     * @param width Image width
+     * @param height Image height
+     */
     protected void addImage(JPanel parent, String filename, int x, int y, int width, int height) {
         JLabel img = new JLabel();
         ImageIcon unit = new ImageIcon(RMan.getPath(filename));
@@ -128,6 +179,21 @@ public class SlideShowFrame extends JPanel {
         img.setIcon(unit);
         parent.add(img);
     }
+
+    /**
+     * Creates and adds a hitbox with specified text to a slide
+     * @param parent JPanel to add hitbox to
+     * @param boxX Hitbox x position
+     * @param boxY Hitbox y position
+     * @param boxWidth Hitbox width
+     * @param boxHeight Hitbox height
+     * @param stringId String ID to RMan to grab from JSON
+     * @param textX Text x position
+     * @param textY Text y position
+     * @param textWidth Text width
+     * @param textHeight Text height
+     * @param slide String ID of slide to jump on hitbox press
+     */
     protected void addHitbox(JPanel parent, int boxX, int boxY, int boxWidth, int boxHeight,
                            String stringId, int textX, int textY, int textWidth, int textHeight, String slide) {
         JLabel label = addDesc(parent, stringId, 18, true, textX, textY, textWidth, textHeight);
