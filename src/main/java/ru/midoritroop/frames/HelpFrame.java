@@ -49,21 +49,13 @@ public class HelpFrame extends SlideShowFrame {
         btn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File file = new File(RMan.getPath(filename));
-                if (file.toString().endsWith(".pdf")) {
-                    try {
-                        Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + file);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                try {
+                    File file = new File(RMan.getPath(filename));
+                    if (file.exists() && Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().open(file);
                     }
-                }
-                else {
-                    Desktop desktop = Desktop.getDesktop();
-                    try {
-                        desktop.open(file);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });

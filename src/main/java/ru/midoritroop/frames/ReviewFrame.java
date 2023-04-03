@@ -9,6 +9,7 @@ public class ReviewFrame extends SlideShowFrame {
         createFirstSlide();
         createSecondSlide();
         createThirdSlide();
+        createFourthSlide();
 
         crd.first(slideShow);
     }
@@ -89,5 +90,32 @@ public class ReviewFrame extends SlideShowFrame {
         addHitbox(thirdSlide, 684, 395, 730-684, 497-395,
                 "slide3H8",400, 90, 250, 510, "3");
         slideShow.add("3", thirdSlide);
+    }
+
+    private void createFourthSlide() {
+        JPanel fourthSlide = createSlide("slide4Name");
+
+        addImage(fourthSlide, "Shepot-T.png", 75, 75, 500, 500);
+
+        addDesc(fourthSlide, "slide4Desc",25,
+                false, 650, 75, 550, 500);
+
+        addHitbox(fourthSlide, 145, 74, 290-145, 191-74,
+                "slide4H1",300,80,350,400, "4");
+        addHitbox(fourthSlide, 481, 230, 569-481, 320-230,
+                "slide4H2", 160,100,300,350, "4");
+        addHitbox(fourthSlide, 81, 306, 190-81, 515-306,
+                "slide4H3", 200,250,230,280, "4");
+        addHitbox(fourthSlide, 276, 326, 459-276, 511-326,
+                "slide4H4", 30,280,230,300, "4");
+        addHitbox(fourthSlide, 205, 514, 247-205, 554-514,
+                "slide4H5", 300,250,330,280, "4");
+        addHitbox(fourthSlide, 296, 513, 348-296, 566-513,
+                "slide4H6",50,250,250,350, "4");
+        addHitbox(fourthSlide, 377, 516, 466-377, 579-516,
+                "slide4H7",100,250,300,350, "4");
+        addHitbox(fourthSlide, 235,458,271-235,509-458,
+                "slide4H8",230,270,400,250, "4");
+        slideShow.add("4", fourthSlide);
     }
 }
